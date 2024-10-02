@@ -310,15 +310,15 @@ const TableOne = () => {
         <Box>
           <Text fontWeight="bold">Select Amount Range: {amountRange[0]} - {amountRange[1]}</Text>
           <Slider
-        getAriaLabel={() => 'Temperature range'}
-        value={amountRange}
-        min={0}
-        max={50000}
-        onChange={handleAmountChange}
-        step={1000}
-        valueLabelDisplay="auto"
-        getAriaValueText={valuetext}
-      />
+            getAriaLabel={() => 'Temperature range'}
+            value={amountRange}
+            min={0}
+            max={50000}
+            onChange={handleAmountChange}
+            step={1000}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
         </Box>
 
         {/* Status Filter */}
@@ -342,7 +342,7 @@ const TableOne = () => {
 
       {/* Table */}
       <div className="flex flex-col">
-        <div className="grid grid-cols-7">
+        <div className="grid grid-cols-7 gap-2 items-center border-b pb-3.5 grid-cols-2 lg:grid">
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">ID</h5>
           </div>
@@ -368,9 +368,10 @@ const TableOne = () => {
 
         {filteredClients.map((client) => (
           <div
-            className="grid grid-cols-7 border-b border-stroke dark:border-dark-3"
+            className="grid grid-cols-2 lg:grid-cols-7 border-b py-2 gap-2 items-center dark:border-dark-3"
             key={client.id}
           >
+
             <div className="flex items-center px-2 py-4">
               <p className="font-medium text-dark dark:text-white">{client.id}</p>
             </div>
@@ -391,10 +392,10 @@ const TableOne = () => {
                 value={client.status}
                 onChange={(e) => handleStatussChange(client.id, e.target.value)}
                 className={`border rounded p-1 font-medium bg-white ${client.status === "Done"
-                    ? "bg-[#219653]/[0.1] text-[#219653]"
-                    : client.status === "Rejected"
-                      ? "bg-[#D34053]/[0.1] text-[#D34053]"
-                      : "bg-[#FFA70B]/[0.1] text-[#FFA70B]"
+                  ? "bg-[#219653]/[0.1] text-[#219653]"
+                  : client.status === "Rejected"
+                    ? "bg-[#D34053]/[0.1] text-[#D34053]"
+                    : "bg-[#FFA70B]/[0.1] text-[#FFA70B]"
                   }`}
               >
                 <option value="Contacted" className="text-[#FFA70B]">
