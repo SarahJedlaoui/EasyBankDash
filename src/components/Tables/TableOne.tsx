@@ -342,7 +342,7 @@ const TableOne = () => {
 
       {/* Table */}
       <div className="flex flex-col">
-        <div className="grid grid-cols-7 gap-2 items-center border-b pb-3.5 grid-cols-2 lg:grid">
+        <div className="grid grid-cols-7 gap-2 items-center border-b pb-3.5 grid-cols-2 md:grid lg:grid">
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">ID</h5>
           </div>
@@ -368,7 +368,7 @@ const TableOne = () => {
 
         {filteredClients.map((client) => (
           <div
-            className="grid grid-cols-2 lg:grid-cols-7 border-b py-2 gap-2 items-center dark:border-dark-3"
+            className="grid grid-cols-2 md:grid-cols-7 lg:grid-cols-7 border-b py-2 gap-2 items-center dark:border-dark-3"
             key={client.id}
           >
 
