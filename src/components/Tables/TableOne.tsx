@@ -11,11 +11,11 @@ import {
   RangeSliderFilledTrack,
   RangeSliderThumb,
   VStack,
-  Heading,
-  Select
+  Heading
 } from "@chakra-ui/react";
 import * as React from 'react';
 import Slider from '@mui/material/Slider';
+import Select from 'react-select';
 
 interface Client {
   id: number;
@@ -216,7 +216,6 @@ function valuetext(value: number) {
 const TableOne = () => {
   const [clients, setClients] = useState(clientData);
 
-
   // Filters state
   const [residenceFilter, setResidenceFilter] = useState<string[]>([]);
   const [amountRange, setAmountRange] = React.useState<number[]>([0, 37000]);
@@ -234,9 +233,11 @@ const TableOne = () => {
 
   const allResidences = Array.from(new Set(clientData.map((client) => client.residence)));
   const allStatuses = ["Contacted", "Done", "Rejected"];
+
   // Handle residence filter change
-  const handleResidenceChange = (value: string[]) => {
-    setResidenceFilter(value);
+  const handleResidenceChange = (selectedOptions: any) => {
+    const selectedResidences = selectedOptions.map((option: { value: string }) => option.value);
+    setResidenceFilter(selectedResidences);
   };
 
   // Handle amount range change (Slider)
@@ -244,12 +245,13 @@ const TableOne = () => {
     setAmountRange(newValue as number[]);
   };
 
-  // Function to handle status changes
+  // Handle status changes
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
     setStatusFilter(selectedOptions);
   };
-  // Function to handle status changes
+
+  // Handle client status update
   const handleStatussChange = (id: number, newStatus: string) => {
     setClients((prev) =>
       prev.map((client) =>
@@ -258,7 +260,7 @@ const TableOne = () => {
     );
   };
 
-  // Function to handle note changes
+  // Handle note changes
   const handleNoteChange = (id: number, newNote: string) => {
     setClients((prev) =>
       prev.map((client) =>
@@ -291,26 +293,22 @@ const TableOne = () => {
         {/* Residence Filter */}
         <Box>
           <Text fontWeight="bold">Select Residences</Text>
-          <CheckboxGroup
-            value={residenceFilter}
+          <Select
+            isMulti
+            options={allResidences.map((residence) => ({
+              value: residence,
+              label: residence,
+            }))}
             onChange={handleResidenceChange}
-            colorScheme="teal"
-          >
-            <Stack direction="column" spacing={2} mt={2}>
-              {allResidences.map((residence) => (
-                <Checkbox key={residence} value={residence}>
-                  {residence}
-                </Checkbox>
-              ))}
-            </Stack>
-          </CheckboxGroup>
+            placeholder="Select residences"
+          />
         </Box>
 
         {/* Amount Range Filter */}
         <Box>
           <Text fontWeight="bold">Select Amount Range: {amountRange[0]} - {amountRange[1]}</Text>
           <Slider
-            getAriaLabel={() => 'Temperature range'}
+            getAriaLabel={() => 'Amount range'}
             value={amountRange}
             min={0}
             max={50000}
@@ -324,8 +322,7 @@ const TableOne = () => {
         {/* Status Filter */}
         <Box>
           <Text fontWeight="bold">Select Status</Text>
-          <Select
-            size="md"
+          <select
             multiple
             value={statusFilter}
             onChange={handleStatusChange}
@@ -335,10 +332,9 @@ const TableOne = () => {
                 {status}
               </option>
             ))}
-          </Select>
+          </select>
         </Box>
       </VStack>
-
 
       {/* Table */}
       <div className="flex flex-col">
@@ -354,7 +350,7 @@ const TableOne = () => {
           </div>
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Residence</h5>
-          </div>
+          </div>   
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">Amount</h5>
           </div>
@@ -366,12 +362,11 @@ const TableOne = () => {
           </div>
         </div>
 
-        {filteredClients.map((client) => (
+        {filteredClients.map((client) => ( 
           <div
             className="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-7 border-b py-2 gap-2 items-center dark:border-dark-3"
             key={client.id}
           >
-
             <div className="flex items-center px-2 py-4">
               <p className="font-medium text-dark dark:text-white">{client.id}</p>
             </div>
@@ -414,8 +409,7 @@ const TableOne = () => {
                 type="text"
                 value={client.notes}
                 onChange={(e) => handleNoteChange(client.id, e.target.value)}
-                className="border rounded p-1 w-full"
-                placeholder="Add note"
+                className="border rounded p-1"
               />
             </div>
           </div>
