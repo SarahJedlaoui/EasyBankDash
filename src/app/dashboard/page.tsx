@@ -2,19 +2,18 @@ import ECommerce from "@/components/Dashboard/E-commerce";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import React from "react";
-import Signin from "@/app/auth/signin/page";
 export const metadata: Metadata = {
-  title:
-    "EasyBank Leads Dashboard ",
-  description: "EasyBank Leads Dashboard ",
+    title:
+        "EasyBank Leads Dashboard ",
+    description: "EasyBank Leads Dashboard ",
 };
 
 export default function Home() {
-  return (
-    <>
-      
-        <Signin />
-      
-    </>
-  );
+    return (
+        <>
+            <DefaultLayout>
+                <ECommerce />
+            </DefaultLayout>
+        </>
+    );
 }

@@ -13,7 +13,7 @@ const SelectGroupThree: React.FC = () => {
     <div className="mb-5.5">
       <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
         {" "}
-        Which option best describes you?{" "}
+        Which option best describes the role?{" "}
       </label>
 
       <div className="dark:bg-form-input relative z-20 bg-transparent">
@@ -28,22 +28,28 @@ const SelectGroupThree: React.FC = () => {
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select your subject
+            Select role
           </option>
-          <option value="Student" className="text-body dark:text-bodydark">
-            Student
-          </option>
-          <option
-            value="UX/UI Designer"
-            className="text-body dark:text-bodydark"
-          >
-            UX/UI Designer
+          <option value="EasyBank" className="text-body dark:text-bodydark">
+            EasyBank Admin
           </option>
           <option
-            value="Web Developer"
+            value="EasyCollect"
             className="text-body dark:text-bodydark"
           >
-            Web Developer
+            EasyCollect Admin
+          </option>
+          <option
+            value="EasyHome"
+            className="text-body dark:text-bodydark"
+          >
+            EasyHome Admin
+          </option>
+          <option
+            value="SuperAdmin"
+            className="text-body dark:text-bodydark"
+          >
+            SuperAdmin
           </option>
         </select>
 

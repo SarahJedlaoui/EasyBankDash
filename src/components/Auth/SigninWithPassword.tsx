@@ -129,12 +129,16 @@ export default function SigninWithPassword() {
       </div>
 
       <div className="mb-4.5">
+      <Link
+          href="/dashboard"
+        >
         <button
           type="submit"
           className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
         >
           Sign In
         </button>
+        </Link>
       </div>
     </form>
   );

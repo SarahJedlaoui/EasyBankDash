@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import Signin from "@/components/Auth/Signin";
+import InputGroup from "@/components/FormElements/InputGroup";
 
 export const metadata: Metadata = {
   title: "EasyBank Leads Dashboard ",
@@ -18,7 +19,31 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-              <Signin />
+            <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
+              <h3 className="font-semibold text-dark dark:text-white">
+                Forgot Password Form
+              </h3>
+            </div>
+            <form action="#">
+              <div className="p-6.5">
+
+                <InputGroup
+                  label="Email"
+                  type="email"
+                  placeholder="Enter email address"
+                  customClasses="mb-4.5"
+                />
+
+               
+                <Link  href="/auth/reset-password">
+                <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+                  Send Reset Link
+                </button>
+                </Link>
+              </div>
+            </form>
+          </div>
             </div>
           </div>
 
@@ -41,15 +66,15 @@ const SignIn: React.FC = () => {
                 />
               </Link>
               <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-                Sign in to your account
+                Welcome!
               </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-                Welcome Back!
+              Forgot Password 
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-                Please sign in to your account by completing the necessary
+                Please complete the necessary
                 fields below
               </p>
 
