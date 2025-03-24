@@ -19,6 +19,8 @@ interface User {
 
 const FormLayout = () => {
   const [showModal, setShowModal] = useState(false);
+  const [editingUserId, setEditingUserId] = useState<number | null>(null);
+
   const [users, setUsers] = useState<User[]>([
     {
       id: 1,
@@ -45,7 +47,7 @@ const FormLayout = () => {
       role: "Fournisseur immobiler",
     },
   ]);
-  
+
   const [formData, setFormData] = useState<Omit<User, "id">>({
     firstName: "",
     lastName: "",
@@ -62,13 +64,24 @@ const FormLayout = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newUser: User & { fullName: string } = {
-      id: users.length + 1,
-      ...formData,
-      fullName: `${formData.firstName} ${formData.lastName}`,
-    };
-    
-    setUsers([...users, newUser]);
+
+    if (editingUserId !== null) {
+      // Update existing user
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === editingUserId ? { ...user, ...formData } : user
+        )
+      );
+    } else {
+      // Add new user
+      const newUser: User = {
+        id: users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1,
+        ...formData,
+      };
+      setUsers([...users, newUser]);
+    }
+
+    // Reset
     setFormData({
       firstName: "",
       lastName: "",
@@ -76,8 +89,26 @@ const FormLayout = () => {
       phone: "",
       role: "",
     });
+    setEditingUserId(null);
     setShowModal(false);
   };
+
+  const handleDelete = (id: number) => {
+    setUsers(users.filter((user) => user.id !== id));
+  };
+
+  const handleEdit = (user: User) => {
+    setFormData({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+    });
+    setEditingUserId(user.id);
+    setShowModal(true);
+  };
+
 
   const columns: GridColDef<User>[] = [
     { field: "id", headerName: "ID", width: 70 },
@@ -85,10 +116,32 @@ const FormLayout = () => {
     { field: "lastName", headerName: "Last name", width: 130 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "phone", headerName: "Phone", width: 150 },
-    { field: "role", headerName: "Role", width: 140 },
-   
-    
+    { field: "role", headerName: "Role", width: 180 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 180,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleEdit(params.row)}
+            className="text-blue-600 hover:underline"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(params.row.id)}
+            className="text-red-600 hover:underline"
+          >
+            Delete
+          </button>
+        </div>
+      ),
+    },
   ];
+
 
   return (
     <DefaultLayout>
@@ -105,11 +158,11 @@ const FormLayout = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-999999 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-dark">
             <div className="mb-4 flex justify-between items-center">
               <h2 className="text-xl font-bold text-dark dark:text-white">
-                Create New Admin
+                {editingUserId ? "Edit Admin" : "Create New Admin"}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
@@ -202,7 +255,7 @@ const FormLayout = () => {
                   type="submit"
                   className="rounded bg-primary px-4 py-2 text-white hover:bg-opacity-90"
                 >
-                  Create
+                  {editingUserId ? "Update" : "Create"}
                 </button>
               </div>
             </form>

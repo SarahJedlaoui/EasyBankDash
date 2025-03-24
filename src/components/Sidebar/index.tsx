@@ -43,7 +43,6 @@ const menuGroups = [
         route: "/dashboard",
         children: [
           { label: "User Management", route: "/forms/form-layout" },
-          { label: "Data", route: "/tables" },
         ],
        
       },
@@ -73,10 +72,10 @@ const menuGroups = [
           </svg>
         ),
         label: "EasyCRM",
-        route: "/tables",
+        route: "/forms/tunisian",
         children: [
-          { label: "Tunisian resident", route: "/tables" },
-          { label: "TRE", route: "/pages/settings" },
+          { label: "Tunisian resident", route: "/forms/tunisian" },
+          { label: "TRE", route: "/forms/tunisian" },
          
         ],
       },
