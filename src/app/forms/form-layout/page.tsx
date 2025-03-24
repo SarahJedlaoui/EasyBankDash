@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import InputGroup from "@/components/FormElements/InputGroup";
+import InputGroup from "@/components/FormElements/InputGroup2";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import type { GridColDef } from "@mui/x-data-grid";
