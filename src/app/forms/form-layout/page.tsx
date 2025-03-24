@@ -185,7 +185,7 @@ const FormLayout = () => {
                   <option value="SuperAdmin">Etablissement Financier</option>
                   <option value="SuperAdmin">Fournisseur immobiler</option>
                   <option value="SuperAdmin">Expert Immobiler</option>
-                  <option value="SuperAdmin">Cabinet d'architecture</option>
+                  <option value="SuperAdmin">Cabinet d&apos;architecture</option>
                   <option value="SuperAdmin">Support technique</option>
                 </select>
               </div>
