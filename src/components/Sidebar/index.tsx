@@ -75,7 +75,7 @@ const menuGroups = [
         route: "/forms/tunisian",
         children: [
           { label: "Tunisian resident", route: "/forms/tunisian" },
-          { label: "TRE", route: "/forms/tunisian" },
+          { label: "TRE", route: "/forms/tre" },
          
         ],
       },

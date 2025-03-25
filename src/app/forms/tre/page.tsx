@@ -12,17 +12,14 @@ interface ClientData {
   id: number;
   fullName: string;
   phone: string;
-  gouvernerat: string;
+  residence: string;
+  devise: string;
   salaire: string;
   statut: string;
   banque: string;
   typeCreditDemande: string;
   montantCreditDemande: string;
-  cessionSalaire: string;
   creditEnCours: string;
-  typeCreditObtenu?: string;
-  montantCreditObtenu?: string;
-  depasseMiParcours?: string;
   progress: number;
 }
 
@@ -45,57 +42,32 @@ const banqueColors: Record<string, string> = {
 const ClientForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [clients, setClients] = useState<ClientData[]>([
-    {
-      id: 1,
-      fullName: "Ahmed Ben Salah",
-      phone: "+21620000111",
-      gouvernerat: "Tunis",
-      salaire: "1200",
-      statut: "confirmé",
-      banque: "accordé",
-      typeCreditDemande: "Crédit immobilié",
-      montantCreditDemande: "80000",
-      cessionSalaire: "oui",
-      creditEnCours: "non",
-      typeCreditObtenu: "",
-      montantCreditObtenu: "",
-      depasseMiParcours: "",
-      progress: 80,
-    },
-    {
-      id: 2,
-      fullName: "Salma Trabelsi",
-      phone: "+21620000222",
-      gouvernerat: "Sfax",
-      salaire: "950",
-      statut: "en attente",
-      banque: "à vérifier",
-      typeCreditDemande: "Micro-crédit",
-      montantCreditDemande: "5000",
-      cessionSalaire: "non",
-      creditEnCours: "oui",
-      typeCreditObtenu: "Crédit de Consommation",
-      montantCreditObtenu: "3000",
-      depasseMiParcours: "oui",
-      progress: 60,
-    },
-  ]);
+  const [clients, setClients] = useState<ClientData[]>([{
+    id: 1,
+    fullName: "Youssef Karoui",
+    phone: "+33 612345678",
+    residence: "France",
+    devise: "Euro",
+    salaire: "2200",
+    statut: "confirmé",
+    banque: "accordé",
+    typeCreditDemande: "Achat d'un logement",
+    montantCreditDemande: "120000",
+    creditEnCours: "non",
+    progress: 70
+  }]);
 
   const [formData, setFormData] = useState<Omit<ClientData, "id" | "progress">>({
     fullName: "",
     phone: "",
-    gouvernerat: "",
+    residence: "",
+    devise: "",
     salaire: "",
     statut: "",
     banque: "",
     typeCreditDemande: "",
     montantCreditDemande: "",
-    cessionSalaire: "",
-    creditEnCours: "",
-    typeCreditObtenu: "",
-    montantCreditObtenu: "",
-    depasseMiParcours: "",
+    creditEnCours: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -128,17 +100,14 @@ const ClientForm = () => {
     setFormData({
       fullName: "",
       phone: "",
-      gouvernerat: "",
+      residence: "",
+      devise: "",
       salaire: "",
       statut: "",
       banque: "",
       typeCreditDemande: "",
       montantCreditDemande: "",
-      cessionSalaire: "",
-      creditEnCours: "",
-      typeCreditObtenu: "",
-      montantCreditObtenu: "",
-      depasseMiParcours: "",
+      creditEnCours: ""
     });
     setEditingId(null);
     setShowModal(false);
@@ -147,13 +116,14 @@ const ClientForm = () => {
   const columns: GridColDef<ClientData>[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "fullName", headerName: "Nom & Prénom", width: 180 },
-    { field: "phone", headerName: "Tél", width: 130 },
-    { field: "gouvernerat", headerName: "Gouvernerat", width: 130 },
-    { field: "salaire", headerName: "Salaire (TND)", width: 130 },
+    { field: "phone", headerName: "Téléphone", width: 130 },
+    { field: "residence", headerName: "Lieu de résidence", width: 150 },
+    { field: "devise", headerName: "Devise", width: 100 },
+    { field: "salaire", headerName: "Revenu (devise)", width: 140 },
     {
       field: "statut",
       headerName: "Statut client",
-      width: 150,
+      width: 140,
       renderCell: (params) => (
         <span className={`px-2 py-1 rounded text-xs font-medium ${statutColors[params.value] || "bg-gray-100 text-gray-800"}`}>{params.value}</span>
       ),
@@ -161,18 +131,14 @@ const ClientForm = () => {
     {
       field: "banque",
       headerName: "Réponse banque",
-      width: 150,
+      width: 160,
       renderCell: (params) => (
         <span className={`px-2 py-1 rounded text-xs font-medium ${banqueColors[params.value] || "bg-gray-100 text-gray-800"}`}>{params.value}</span>
       ),
     },
-    { field: "typeCreditDemande", headerName: "Type crédit demandé", width: 160 },
+    { field: "typeCreditDemande", headerName: "Type crédit demandé", width: 180 },
     { field: "montantCreditDemande", headerName: "Montant demandé (TND)", width: 170 },
-    { field: "cessionSalaire", headerName: "Cession Salaire", width: 130 },
     { field: "creditEnCours", headerName: "Crédit en cours", width: 130 },
-    { field: "typeCreditObtenu", headerName: "Type crédit obtenu", width: 160 },
-    { field: "montantCreditObtenu", headerName: "Montant obtenu (TND)", width: 160 },
-    { field: "depasseMiParcours", headerName: "Mi-parcours", width: 130 },
     {
       field: "progress",
       headerName: "Documents",
@@ -203,8 +169,7 @@ const ClientForm = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tunisian Clients" />
-
+      <Breadcrumb pageName="Clients Résidents à l'Étranger" />
       <div className="mb-4">
         <button
           className="rounded bg-primary px-4 py-2 text-white"
@@ -219,7 +184,7 @@ const ClientForm = () => {
           <div className="w-full p-10 max-w-4xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-dark max-h-screen overflow-y-auto">
             <div className="mb-4 flex justify-between items-center">
               <h2 className="text-xl font-bold text-dark dark:text-white">
-                {editingId ? "Edit User" : "Create New User"}
+                {editingId ? "Modifier Client" : "Créer un nouveau client"}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
@@ -229,63 +194,39 @@ const ClientForm = () => {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {formFields.map((field) => {
-                if (field.name === "statut") {
-                  return (
-                    <div key={field.name}>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{field.label}</label>
-                      <select name={field.name} value={formData.statut} onChange={handleChange} className="w-full rounded border border-gray-300 p-2">
-                        <option value="">Sélectionner</option>
-                        <option value="en attente">En attente</option>
-                        <option value="confus">Confus</option>
-                        <option value="confirmé">Confirmé</option>
-                        <option value="injoignable">Injoignable</option>
-                        <option value="réfusé">Réfusé</option>
-                      </select>
-                    </div>
-                  );
-                }
-                if (field.name === "banque") {
-                  return (
-                    <div key={field.name}>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{field.label}</label>
-                      <select name={field.name} value={formData.banque} onChange={handleChange} className="w-full rounded border border-gray-300 p-2">
-                        <option value="">Sélectionner</option>
-                        <option value="non traité">Non traité</option>
-                        <option value="au cours de traitement">Au cours de traitement</option>
-                        <option value="à vérifier">À vérifier</option>
-                        <option value="accordé">Accordé</option>
-                        <option value="réfusé">Réfusé</option>
-                      </select>
-                    </div>
-                  );
-                }
-                return (
-                  <InputGroup
-                    key={field.name}
-                    placeholder=""
-                    label={field.label}
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData] || ""}
-                    onChange={handleChange}
-                    type="text"
-                  />
-                );
-              })}
+              <InputGroup placeholder='' label="Nom & Prénom" name="fullName" value={formData.fullName} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Numéro de téléphone" name="phone" value={formData.phone} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Lieu de résidence en Tunisie" name="residence" value={formData.residence} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Devise de résidence" name="devise" value={formData.devise} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Salaire net ou revenu mensuel" name="salaire" value={formData.salaire} onChange={handleChange} type="text" />
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Statut du client</label>
+                <select name="statut" value={formData.statut} onChange={handleChange} className="w-full rounded border border-gray-300 p-2">
+                  <option value="">Sélectionner</option>
+                  <option value="en attente">En attente</option>
+                  <option value="confus">Confus</option>
+                  <option value="confirmé">Confirmé</option>
+                  <option value="injoignable">Injoignable</option>
+                  <option value="réfusé">Réfusé</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Réponse Banque</label>
+                <select name="banque" value={formData.banque} onChange={handleChange} className="w-full rounded border border-gray-300 p-2">
+                  <option value="">Sélectionner</option>
+                  <option value="non traité">Non traité</option>
+                  <option value="au cours de traitement">Au cours de traitement</option>
+                  <option value="à vérifier">À vérifier</option>
+                  <option value="accordé">Accordé</option>
+                  <option value="réfusé">Réfusé</option>
+                </select>
+              </div>
+              <InputGroup placeholder='' label="Type du crédit demandé" name="typeCreditDemande" value={formData.typeCreditDemande} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Montant du crédit demandé (TND)" name="montantCreditDemande" value={formData.montantCreditDemande} onChange={handleChange} type="text" />
+              <InputGroup placeholder='' label="Crédit en cours" name="creditEnCours" value={formData.creditEnCours} onChange={handleChange} type="text" />
               <div className="col-span-2 flex justify-end gap-4 mt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="rounded border border-gray-300 px-4 py-2"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="rounded bg-primary px-4 py-2 text-white hover:bg-opacity-90"
-                >
-                  {editingId ? "Modifier" : "Ajouter"}
-                </button>
+                <button type="button" onClick={() => setShowModal(false)} className="rounded border border-gray-300 px-4 py-2">Annuler</button>
+                <button type="submit" className="rounded bg-primary px-4 py-2 text-white hover:bg-opacity-90">{editingId ? "Modifier" : "Ajouter"}</button>
               </div>
             </form>
           </div>
@@ -305,21 +246,5 @@ const ClientForm = () => {
     </DefaultLayout>
   );
 };
-
-const formFields = [
-  { label: "Nom & Prénom", name: "fullName" },
-  { label: "Tél", name: "phone" },
-  { label: "Gouvernerat", name: "gouvernerat" },
-  { label: "Salaire net (TND)", name: "salaire" },
-  { label: "Statut client", name: "statut" },
-  { label: "Réponse banque", name: "banque" },
-  { label: "Type crédit demandé", name: "typeCreditDemande" },
-  { label: "Montant crédit demandé", name: "montantCreditDemande" },
-  { label: "Cession sur salaire", name: "cessionSalaire" },
-  { label: "Crédit en cours", name: "creditEnCours" },
-  { label: "Type crédit obtenu", name: "typeCreditObtenu" },
-  { label: "Montant crédit obtenu", name: "montantCreditObtenu" },
-  { label: "Dépassé mi-parcours", name: "depasseMiParcours" },
-];
 
 export default ClientForm;

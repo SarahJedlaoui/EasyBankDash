@@ -19,31 +19,38 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-            <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
-              <h3 className="font-semibold text-dark dark:text-white">
-                Forgot Password Form
-              </h3>
-            </div>
-            <form action="#">
-              <div className="p-6.5">
+              <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
+                  <h3 className="font-semibold text-dark dark:text-white">
+                    Forgot Password Form
+                  </h3>
+                </div>
+                <form action="#">
+                  <div className="p-6.5">
 
-                <InputGroup
-                  label="Email"
-                  type="email"
-                  placeholder="Enter email address"
-                  customClasses="mb-4.5"
-                />
+                    <InputGroup
+                      label="Email"
+                      type="email"
+                      placeholder="Enter email address"
+                      customClasses="mb-4.5"
+                    />
 
-               
-                <Link  href="/auth/reset-password">
-                <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-                  Send Reset Link
-                </button>
-                </Link>
+
+                    <Link href="/auth/password-code">
+                      <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
+                        Send Reset Link
+                      </button>
+                    </Link>
+
+                    <Link
+                      href="/"
+                      className="select-none font-satoshi text-base font-medium text-dark underline duration-300 hover:text-primary dark:text-white dark:hover:text-primary"
+                    >
+                      SignIn
+                    </Link>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
             </div>
           </div>
 
@@ -70,7 +77,7 @@ const SignIn: React.FC = () => {
               </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-              Forgot Password 
+                Forgot Password
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
