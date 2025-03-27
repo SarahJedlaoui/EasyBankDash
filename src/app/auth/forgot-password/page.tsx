@@ -2,14 +2,9 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Metadata } from "next";
 import InputGroup from "@/components/FormElements/InputGroup2";
 import { useState } from "react";
 
-export const metadata: Metadata = {
-  title: "EasyBank Leads Dashboard ",
-  description: "EasyBank Leads Dashboard ",
-};
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
