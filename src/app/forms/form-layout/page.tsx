@@ -62,36 +62,6 @@ const FormLayout = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (editingUserId !== null) {
-      // Update existing user
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === editingUserId ? { ...user, ...formData } : user
-        )
-      );
-    } else {
-      // Add new user
-      const newUser: User = {
-        id: users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1,
-        ...formData,
-      };
-      setUsers([...users, newUser]);
-    }
-
-    // Reset
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      role: "",
-    });
-    setEditingUserId(null);
-    setShowModal(false);
-  };
 
   const handleDelete = (id: number) => {
     setUsers(users.filter((user) => user.id !== id));
@@ -142,6 +112,85 @@ const FormLayout = () => {
     },
   ];
 
+// function to send admin data to backend 
+  const sendAdminToBackend = async (adminData: any) => {
+    try {
+      const response = await fetch("/api/admins", {
+        method: editingUserId ? "PUT" : "POST", // update or create
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(adminData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'envoi des données admin.");
+      }
+  
+      const result = await response.json();
+      console.log("Admin enregistré avec succès :", result);
+      return result;
+    } catch (error) {
+      console.error("Erreur API :", error);
+      alert("Une erreur est survenue lors de l'envoi.");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    const payload = {
+      ...formData,
+      id: editingUserId ?? undefined,
+    };
+  
+    try {
+      const response = await fetch("/api/admins", {
+        method: editingUserId ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'envoi au backend.");
+      }
+  
+      const savedUser = await response.json();
+  
+      if (editingUserId !== null) {
+        // Update existing user in local state
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === editingUserId ? { ...user, ...formData } : user
+          )
+        );
+      } else {
+        // Add new user to local state
+        const newUser: User = {
+          id: savedUser.id ?? (users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1),
+          ...formData,
+        };
+        setUsers([...users, newUser]);
+      }
+  
+      // Reset
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        role: "",
+      });
+      setEditingUserId(null);
+      setShowModal(false);
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Une erreur est survenue lors de l'envoi des données.");
+    }
+  };
+  
 
   return (
     <DefaultLayout>

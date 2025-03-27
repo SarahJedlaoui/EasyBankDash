@@ -1,49 +1,75 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import Signin from "@/components/Auth/Signin";
-import InputGroup from "@/components/FormElements/InputGroup";
+import InputGroup from "@/components/FormElements/InputGroup2";
+import { useState } from "react";
 
 export const metadata: Metadata = {
-  title: "EasyBank Leads Dashboard ",
-  description: "EasyBank Leads Dashboard ",
+  title: "EasyBank Password Code ",
+  description: "EasyBank Code Confirmation ",
 };
 
-const SignIn: React.FC = () => {
+const PasswordCode: React.FC = () => {
+  const [code, setCode] = useState("");
+
+  const handleCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/verify-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      if (!res.ok) throw new Error("Code invalide ou expiré");
+
+      // Redirect on success
+      window.location.href = "/auth/reset-password";
+    } catch (error) {
+      console.error(error);
+      alert("Code incorrect. Veuillez réessayer.");
+    }
+  };
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-            <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
-              <h3 className="font-semibold text-dark dark:text-white">
-                Forgot Password Code Form
-              </h3>
-            </div>
-            <form action="#">
-              <div className="p-6.5">
+              <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
+                <div className="border-b border-stroke px-6.5 py-4 dark:border-dark-3">
+                  <h3 className="font-semibold text-dark dark:text-white">
+                    Forgot Password Code Form
+                  </h3>
+                </div>
+                <form onSubmit={handleCodeSubmit}>
+                  <div className="p-6.5">
 
-                <InputGroup
-                  label="Please enter the code sent to your email address"
-                  type="text"
-                  placeholder="Please enter the code sent to your email address"
-                  customClasses="mb-4.5"
-                />
+                    <InputGroup
+                      label="Veuillez entrer le code envoyé à votre adresse email"
+                      type="text"
+                      name="code"
+                      placeholder="Code reçu"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value)}
+                      customClasses="mb-4.5"
+                      required
+                    />
 
-               
-                <Link  href="/auth/reset-password">
-                <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-                  Reset Password
-                </button>
-                </Link>
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90"
+                    >
+                      Vérifier le code
+                    </button>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
             </div>
           </div>
 
@@ -70,7 +96,7 @@ const SignIn: React.FC = () => {
               </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-              Forgot Password 
+                Forgot Password
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
@@ -95,4 +121,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default PasswordCode;

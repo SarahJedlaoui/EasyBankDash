@@ -1,18 +1,42 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import Signin from "@/components/Auth/Signin";
-import InputGroup from "@/components/FormElements/InputGroup";
+import InputGroup from "@/components/FormElements/InputGroup2";
+import { useState } from "react";
 
 export const metadata: Metadata = {
   title: "EasyBank Leads Dashboard ",
   description: "EasyBank Leads Dashboard ",
 };
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
+  const [email, setEmail] = useState("");
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Échec de l'envoi");
+
+      const result = await res.json();
+      // Redirect to code input page
+      window.location.href = "/auth/password-code";
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de l'envoi de l'email. Veuillez réessayer.");
+    }
+  };
+
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
@@ -25,22 +49,26 @@ const SignIn: React.FC = () => {
                     Forgot Password Form
                   </h3>
                 </div>
-                <form action="#">
+                <form onSubmit={handleForgotPassword}>
                   <div className="p-6.5">
 
                     <InputGroup
                       label="Email"
+                      name="Email"
                       type="email"
                       placeholder="Enter email address"
                       customClasses="mb-4.5"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
                     />
 
-
-                    <Link href="/auth/password-code">
-                      <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-                        Send Reset Link
-                      </button>
-                    </Link>
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90"
+                    >
+                      Send Reset Link
+                    </button>
 
                     <Link
                       href="/"
@@ -102,4 +130,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;

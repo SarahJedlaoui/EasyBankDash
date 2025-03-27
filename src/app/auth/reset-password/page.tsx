@@ -1,18 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import Signin from "@/components/Auth/Signin";
-import InputGroup from "@/components/FormElements/InputGroup";
+import InputGroup from "@/components/FormElements/InputGroup2";
 
 export const metadata: Metadata = {
   title: "EasyBank Leads Dashboard ",
   description: "EasyBank Leads Dashboard ",
 };
 
-const SignIn: React.FC = () => {
+const ResetPassword: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error("Échec de la réinitialisation du mot de passe");
+
+      alert("Mot de passe réinitialisé avec succès !");
+      window.location.href = "/"; // or redirect to /login
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de la réinitialisation du mot de passe.");
+    }
+  };
+
   return (
     <>
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
@@ -25,34 +53,49 @@ const SignIn: React.FC = () => {
                     Reset Password Form
                   </h3>
                 </div>
-                <form action="#">
+                <form onSubmit={handleResetPassword}>
                   <div className="p-6.5">
 
                     <InputGroup
                       label="Email"
                       type="email"
+                      name="email"
                       placeholder="Enter email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       customClasses="mb-4.5"
+                      required
                     />
 
                     <InputGroup
                       label="Password"
                       type="password"
+                      name="password"
                       placeholder="Enter password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       customClasses="mb-4.5"
+                      required
                     />
 
                     <InputGroup
                       label="Re-type Password"
                       type="password"
+                      name="confirmPassword"
                       placeholder="Re-enter"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       customClasses="mb-5.5"
+                      required
                     />
-                    <Link href="/dashboard">
-                      <button className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90">
-                        Reset
-                      </button>
-                    </Link>
+
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-[7px] bg-primary p-[13px] font-medium text-white hover:bg-opacity-90"
+                    >
+                      Reset
+                    </button>
+
                     <Link
                       href="/"
                       className="select-none font-satoshi text-base font-medium text-dark underline duration-300 hover:text-primary dark:text-white dark:hover:text-primary"
@@ -114,4 +157,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;

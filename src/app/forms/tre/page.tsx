@@ -7,6 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
 import type { GridColDef } from "@mui/x-data-grid";
+import { useEffect } from "react";
+
 
 interface ClientData {
   id: number;
@@ -56,6 +58,22 @@ const ClientForm = () => {
     creditEnCours: "non",
     progress: 70
   }]);
+
+    useEffect(() => {
+      const fetchClients = async () => {
+        try {
+          const res = await fetch("/api/clients");
+          if (!res.ok) throw new Error("Erreur lors du chargement des clients");
+          const data = await res.json();
+          setClients(data);
+        } catch (err) {
+          console.error("Erreur de récupération des données clients :", err);
+        }
+      };
+  
+      fetchClients();
+    }, []);
+
 
   const [formData, setFormData] = useState<Omit<ClientData, "id" | "progress">>({
     fullName: "",
