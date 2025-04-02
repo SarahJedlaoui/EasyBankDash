@@ -72,9 +72,9 @@ const menuGroups = [
           </svg>
         ),
         label: "Administration",
-        route: "/forms/form-layout",
+        route: "/forms/user-management",
         children: [
-          { label: "User Management", route: "/forms/form-layout" },
+          { label: "User Management", route: "/forms/user-management" },
         ],
        
       },
